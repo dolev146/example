@@ -1,0 +1,12 @@
+[34m.
+[0m├──[-rw-rw-r-- dolev    dolev               0]    test2 
+├──[-rw-rw-r-- dolev    dolev               8704]    stree.o 
+├──[-rwxrwxr-x dolev   dolev               13896]   [32m[1m stree [0m
+[0m├──[-rw-rw-r-- dolev    dolev               519]    test 
+├──[-rw-rw-r-- dolev    dolev               5826]    stree.c 
+├──[-rw-rw-r-- dolev    dolev               145]    makefile 
+├──[drwxrwxr-x dolev   dolev               4096]   [34m[1m abc [0m
+[0m│  └──[-rw-rw-r-- dolev    dolev               0]    abtr 
+├──[-rw-rw-r-- dolev    dolev               641]    README.md 
+
+1 directories, 8 files

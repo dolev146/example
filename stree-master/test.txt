@@ -1,0 +1,11 @@
+.
+├── [drwxrwxr-x dolev    dolev           4096]  abc
+│   └── [-rw-rw-r-- dolev    dolev              0]  abtr
+├── [-rw-rw-r-- dolev    dolev            145]  makefile
+├── [-rw-rw-r-- dolev    dolev            641]  README.md
+├── [-rwxrwxr-x dolev    dolev          13896]  stree
+├── [-rw-rw-r-- dolev    dolev           5826]  stree.c
+├── [-rw-rw-r-- dolev    dolev           8704]  stree.o
+└── [-rw-rw-r-- dolev    dolev              0]  test
+
+1 directory, 7 files
