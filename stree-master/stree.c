@@ -1,11 +1,11 @@
-#define _XOPEN_SOURCE 600 
+#define _XOPEN_SOURCE 600
 #include <ftw.h>
-#include <sys/types.h> 
-#include <stdio.h>     
-#include <stdlib.h>    
-#include <unistd.h>    
-#include <errno.h>     
-#include <string.h>    
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <pwd.h>
 #include <string.h>
@@ -64,7 +64,7 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
         if (ftwb->level == 1)
         {
             counter++;
-            printf("├──");
+            printf("├── ");
         }
 
         else
@@ -77,7 +77,7 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
                 printf("│  ");
                 i++;
             }
-            printf("└──");
+            printf(" └── ");
         }
 
         mod_to_letters(info.st_mode, modestr);
@@ -97,28 +97,46 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
         if (modestr[0] == 'd')
         {
             // directory
+
             printf(" %s   %s               %ld]   ", uid_to_name(info.st_uid), gid_to_name(info.st_uid), info.st_size);
             printf(COLOR_BLUE " %s \n" COLOR_RESET, &pathname[ftwb->base]); /* Print basename */
             dir++;
         }
         else
         {
+            int spaceNumber = ftwb->level * 3;
+
             if (greenflag == 1)
             {
-                printf(" %s   %s               %ld]   ", uid_to_name(info.st_uid), gid_to_name(info.st_uid), info.st_size);
+
+                printf(" %s   %s               ", uid_to_name(info.st_uid), gid_to_name(info.st_uid));
+
+                while (spaceNumber > 0)
+                {
+                    printf(" ");
+                    spaceNumber--;
+                }
+                printf(" %ld] ", info.st_size);
+
                 printf(COLOR_GREEN " %s \n" COLOR_RESET, &pathname[ftwb->base]); /* Print basename */
             }
             else
 
             {
 
-                printf(" %s    %s               %ld]   ", uid_to_name(info.st_uid), gid_to_name(info.st_uid), info.st_size);
+                printf(" %s   %s               ", uid_to_name(info.st_uid), gid_to_name(info.st_uid));
+                while (spaceNumber > 0)
+                {
+                    printf(" ");
+                    spaceNumber--;
+                }
+                printf(" %ld] ", info.st_size);
+
                 printf(" %s \n", &pathname[ftwb->base]); /* Print basename */
             }
             files++;
         }
     }
-
     else
     {
         printf("---");
@@ -163,31 +181,55 @@ void mod_to_letters(int mode, char str[])
 {
     strcpy(str, "----------");
     if (S_ISDIR(mode))
+    {
         str[0] = 'd';
+    }
     if (S_ISCHR(mode))
+    {
         str[0] = 'c';
+    }
     if (S_ISBLK(mode))
+    {
         str[0] = 'b';
+    }
     if (mode & S_IRUSR)
+    {
         str[1] = 'r';
+    }
     if (mode & S_IWUSR)
+    {
         str[2] = 'w';
+    }
     if (mode & S_IXUSR)
+    {
         str[3] = 'x';
+    }
 
     if (mode & S_IRGRP)
+    {
         str[4] = 'r';
+    }
     if (mode & S_IWGRP)
+    {
         str[5] = 'w';
+    }
     if (mode & S_IXGRP)
+    {
         str[6] = 'x';
+    }
 
     if (mode & S_IROTH)
+    {
         str[7] = 'r';
+    }
     if (mode & S_IWOTH)
+    {
         str[8] = 'w';
+    }
     if (mode & S_IXOTH)
+    {
         str[9] = 'x';
+    }
 }
 char *uid_to_name(uid_t uid)
 {
