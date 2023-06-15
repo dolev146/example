@@ -96,7 +96,6 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
             break;
         case S_IFDIR:
             printf("d");
-            head = sortedInsert(head, (char *)&pathname[ftwb->base]);
             break;
         case S_IFCHR:
             printf("c");
@@ -122,7 +121,7 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
     if (type != FTW_NS)
     {
         printf("%7ld ", (long)sbuf->st_ino);
-        }
+    }
     else
     {
         printf("        ");
@@ -130,6 +129,8 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
 
     printf(" %*s", 4 * ftwb->level, " ");
     printf("%s\n", &pathname[ftwb->base]);
+
+    head = sortedInsert(head, (char *)&pathname[ftwb->base]);
 
     return 0;
 }

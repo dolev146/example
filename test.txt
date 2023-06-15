@@ -1,0 +1,21 @@
+.
+├── [-rwxrwxr-x dolev    dolev           8984]  a
+├── [-rwxrwxr-x dolev    dolev            868]  a.c
+├── [drwxrwxr-x dolev    dolev           4096]  assadf
+│   └── [-rw-rw-r-- dolev    dolev              0]  cadsfsa
+├── [-rwxrwxr-x dolev    dolev           9112]  b
+├── [-rw-rw-r-- dolev    dolev           2945]  b.c
+├── [-rw-rw-r-- dolev    dolev             79]  makefile
+├── [drwxrwxr-x dolev    dolev           4096]  stree-master
+│   ├── [drwxrwxr-x dolev    dolev           4096]  abc
+│   │   └── [-rw-rw-r-- dolev    dolev              0]  abtr
+│   ├── [-rw-rw-r-- dolev    dolev            145]  makefile
+│   ├── [-rw-rw-r-- dolev    dolev            641]  README.md
+│   ├── [-rwxrwxr-x dolev    dolev          13944]  stree
+│   ├── [-rw-rw-r-- dolev    dolev           5501]  stree.c
+│   ├── [-rw-rw-r-- dolev    dolev           9024]  stree.o
+│   ├── [-rw-rw-r-- dolev    dolev            587]  test2.txt
+│   └── [-rw-rw-r-- dolev    dolev            671]  test.txt
+└── [-rw-rw-r-- dolev    dolev              0]  test.txt
+
+3 directories, 15 files

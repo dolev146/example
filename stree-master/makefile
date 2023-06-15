@@ -1,11 +1,12 @@
-CC = gcc
-FLAGS = -g
 
-slast: stree.o
-	$(CC) $(FLAGS) -o stree stree.o
+all: list stree
+
+list: 
+	gcc -c list.c
+
+stree: list
+	gcc -o stree stree.c list.o
 	
-slast.o: slast.c
-	$(CC) $(FLAGS) -c stree.c
 	
 clean:
-	rm -f stree.o stree
+	rm -f stree.o stree *.o 

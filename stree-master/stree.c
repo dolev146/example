@@ -11,24 +11,18 @@
 #include <string.h>
 #include <dirent.h>
 #include <grp.h>
-
-// Define the ANSI color codes
-#define COLOR_GREEN "\x1b[32m"
-#define COLOR_BLUE "\x1b[34m"
-#define COLOR_RESET "\x1b[0m"
+#include "list.h"
 
 char *gid_to_name(gid_t uid);
 char modestr[11];
 char *uid_to_name(uid_t uid);
 char *gid_to_name(gid_t gid);
-void mod_to_letters(int mode, char str[]);
+char *mod_to_letters(int mode, char str[]);
 int dir = 0;
 int counter = 0;
 int files = 0;
 int num = 0;
 char *strr;
-
-// printf("└── ");
 
 static int /* Callback function called by ftw() */
 dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftwb)
@@ -42,9 +36,9 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
             mod_to_letters(info.st_mode, modestr);
 
             if (strstr(strr, "/") != NULL && counter == 0 && modestr[0] == 'd')
-            { /// handle the path/path argument
+            {
                 counter++;
-                printf("%s\n", strr);
+                printf("%s\n", strr); // print the first . directory
                 return 0;
             }
             if (modestr[0] != 'd' && counter == 0)
@@ -56,13 +50,17 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
         }
         if ((strcmp(pathname + (ftwb->base), ".") == 0) || (strcmp(pathname + (ftwb->base), pathname) == 0))
         {
-            printf(COLOR_BLUE "%s\n" COLOR_RESET, &pathname[ftwb->base]);
+            printf("%s\n", &pathname[ftwb->base]); // print the first . directory
             counter++;
-
             return 0;
         }
+        node_t *new_node = (node_t *)malloc(sizeof(node_t));
+
         if (ftwb->level == 1)
         {
+            new_node->data_before = (nodebefore_t *)malloc(sizeof(nodebefore_t));
+            new_node->data_before->data = (char *)malloc(sizeof(char) * strlen("├── "));
+            strcpy(new_node->data_before->data, "├── ");
             counter++;
             printf("├── ");
         }
@@ -70,11 +68,14 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
         else
         {
             counter++;
-            // printf("│  ");
+            new_node->data_before = (nodebefore_t *)malloc(sizeof(char) * 3);
             int i = 0;
             while (i < ftwb->level - 1)
             {
                 printf("│  ");
+                new_node->data_before = (nodebefore_t *)malloc(sizeof(nodebefore_t));
+                new_node->data_before->data = (char *)malloc(sizeof(char) * strlen("│  "));
+                strcpy(new_node->data_before->data, "│  ");
                 i++;
             }
             printf(" └── ");
@@ -99,7 +100,7 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
             // directory
 
             printf(" %s   %s               %ld]   ", uid_to_name(info.st_uid), gid_to_name(info.st_uid), info.st_size);
-            printf(COLOR_BLUE " %s \n" COLOR_RESET, &pathname[ftwb->base]); /* Print basename */
+            printf(" %s \n", &pathname[ftwb->base]); /* Print basename */
             dir++;
         }
         else
@@ -118,7 +119,7 @@ dirTree(const char *pathname, const struct stat *sbuf, int type, struct FTW *ftw
                 }
                 printf(" %ld] ", info.st_size);
 
-                printf(COLOR_GREEN " %s \n" COLOR_RESET, &pathname[ftwb->base]); /* Print basename */
+                printf(" %s \n", &pathname[ftwb->base]); /* Print basename */
             }
             else
 
@@ -171,65 +172,33 @@ int main(int argc, char *argv[])
         }
     }
     if (argc)
-
+    {
         printf("\n%d directories, %d files\n", dir, files);
+    }
+
+    printf(" finish \n \n");
+
+    print_all_nodes();
 
     exit(EXIT_SUCCESS);
 }
 
-void mod_to_letters(int mode, char str[])
+char *mod_to_letters(int mode, char str[])
 {
-    strcpy(str, "----------");
-    if (S_ISDIR(mode))
-    {
-        str[0] = 'd';
-    }
-    if (S_ISCHR(mode))
-    {
-        str[0] = 'c';
-    }
-    if (S_ISBLK(mode))
-    {
-        str[0] = 'b';
-    }
-    if (mode & S_IRUSR)
-    {
-        str[1] = 'r';
-    }
-    if (mode & S_IWUSR)
-    {
-        str[2] = 'w';
-    }
-    if (mode & S_IXUSR)
-    {
-        str[3] = 'x';
-    }
-
-    if (mode & S_IRGRP)
-    {
-        str[4] = 'r';
-    }
-    if (mode & S_IWGRP)
-    {
-        str[5] = 'w';
-    }
-    if (mode & S_IXGRP)
-    {
-        str[6] = 'x';
-    }
-
-    if (mode & S_IROTH)
-    {
-        str[7] = 'r';
-    }
-    if (mode & S_IWOTH)
-    {
-        str[8] = 'w';
-    }
-    if (mode & S_IXOTH)
-    {
-        str[9] = 'x';
-    }
+    static char perms[11];
+    perms[0] = S_ISDIR(mode) ? 'd' : '-';
+    perms[1] = mode & S_IRUSR ? 'r' : '-';
+    perms[2] = mode & S_IWUSR ? 'w' : '-';
+    perms[3] = mode & S_IXUSR ? 'x' : '-';
+    perms[4] = mode & S_IRGRP ? 'r' : '-';
+    perms[5] = mode & S_IWGRP ? 'w' : '-';
+    perms[6] = mode & S_IXGRP ? 'x' : '-';
+    perms[7] = mode & S_IROTH ? 'r' : '-';
+    perms[8] = mode & S_IWOTH ? 'w' : '-';
+    perms[9] = mode & S_IXOTH ? 'x' : '-';
+    perms[10] = '\0';
+    strcpy(str, perms);
+    return perms;
 }
 char *uid_to_name(uid_t uid)
 {

@@ -1,8 +1,8 @@
-[34m.
-[0m├── [-rw-rw-r-- dolev   dolev                   9024]  stree.o 
-├── [-rwxrwxr-x dolev   dolev                   13944] [32m stree 
-[0m├── [-rw-rw-r-- dolev   dolev                   587]  test2.txt 
-├── [-rw-rw-r-- dolev   dolev                   5501]  stree.c 
+.
+├── [-rw-rw-r-- dolev   dolev                   8912]  stree.o 
+├── [-rwxrwxr-x dolev   dolev                   13944]  stree 
+├── [-rw-rw-r-- dolev   dolev                   587]  test2.txt 
+├── [-rw-rw-r-- dolev   dolev                   5317]  stree.c 
 ├── [-rw-rw-r-- dolev   dolev                   145]  makefile 
 ├── [drwxrwxr-x dolev   dolev               4096]    abc 
 │   └── [-rw-rw-r-- dolev   dolev                      0]  abtr 
